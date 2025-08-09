@@ -52,7 +52,7 @@ def display_cabecalho(opcao_atual, menu_atual): #Mostra o cabeçalho das opçõe
         print(f"\n====={cabecalho_mop[menu_atual]}EXCLUIR=====")
 
 def validacao_lista(cod_validar, lista, nome_lista): #Faz a validação para ver se o nome adicionado já não existe no cadastro.
-    if nome_lista == 'aluno' or nome_lista == 'professor':
+    if nome_lista == 'aluno' or nome_lista == 'professor' or nome_lista =='disciplina':
         for dado in lista:
             if dado.get('codigo') == cod_validar:
                     return True
@@ -130,6 +130,10 @@ def add_registro_na_lista(lista):
                 codigo = int(input(f"Digite o código da {lista}: ")) #Faz todas as validações
                 if cancelar_operacao(codigo):
                     return None
+                elif validacao_lista(codigo, dados_lidos, lista):
+                    print("\nCadastro já existe.\n")
+                    return None
+                    
                 nome = input(f"Digite o nome da disciplina: ")
                 if validar_cpf_nome(nome, dados_lidos, lista):
                     print("\nNome já cadastrado!\n")
@@ -255,9 +259,9 @@ def atualizar_lista_registros(lista): #Atualiza o arquivo de registros(turma, ma
                 codigo_antigo = int(input("Qual o código do disciplina que deseja atualizar?: "))
                 if cancelar_operacao(codigo_antigo):
                     return None
-                nome_antigo = input("Digite o nome da disciplina que deseja atualizar?: ")
-                dado_antigo = {'nome':nome_antigo, 'codigo': codigo_antigo}
-                if validacao_lista(dado_antigo, dados_lidos, lista):
+                if validacao_lista(codigo_antigo, dados_lidos, lista):
+                    nome_antigo = input("Digite o nome da disciplina que deseja atualizar?: ")
+                    dado_antigo = {'nome':nome_antigo, 'codigo': codigo_antigo}
                     novo_codigo = int(input('Digite um novo código: '))
                     novo_nome = input("Digite um novo nome: ")
                     dado_novo = {'nome':novo_nome, 'codigo': novo_codigo}
@@ -298,7 +302,7 @@ def atualizar_lista_registros(lista): #Atualiza o arquivo de registros(turma, ma
                     return None
                 
                 antigo_estudante = int(input("Digite o código do estudante: "))
-                dado_antigo = {'codigo':antigo_turma, 'estudante':antigo_estudante}
+                dado_antigo = {'turma':antigo_turma, 'estudante':antigo_estudante}
                 if validacao_lista(dado_antigo, dados_lidos, lista):
                     novo_turma = int(input("Digite o novo código da turma: "))
                     novo_estudante = int(input("Digite o novo código do estudante: "))
